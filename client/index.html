@@ -1,0 +1,24 @@
+<h1>This is the wallet. Check console</h1>
+
+<script
+  src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+  integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+  crossorigin="anonymous"
+></script>
+
+<script>
+  const socket = io("http://localhost:3000");
+
+  // Wallet browser: gets user from deep link url, broadcasts tx, get txHash then sends txhash to socket server
+  socket.emit("transaction", { user: "0xAlice", receipt: "0xtxHash" });
+
+  // Desktop Game: tx hash received from socket server
+  socket.on("0xUserId", (transactionHash) => {
+    console.log("txhash from game:", transactionHash);
+  });
+
+  // check health of server
+  socket.on("healthcheck", (health) => {
+    console.log(health); // OK
+  });
+</script>
