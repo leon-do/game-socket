@@ -1,24 +1,20 @@
 <h1>This is the wallet. Check console</h1>
 
-<script
-  src="https://cdn.socket.io/4.4.0/socket.io.min.js"
-  integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
-  crossorigin="anonymous"
-></script>
-
 <script>
-  const socket = io("http://localhost:3000");
+  const ws = new WebSocket("ws://localhost:3000");
 
-  // Wallet browser: gets user from deep link url, broadcasts tx, get txHash then sends txhash to socket server
-  socket.emit("transaction", { user: "0xAlice", receipt: "0xtxHash" });
+  // d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
+    
+  // can remove ws.onopen when using browser wallet
+  ws.onopen = () => {
+    // e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
+    ws.send(JSON.stringify({ user: "0xAlice", receipt: "0xtxHash" }));
+  };
 
-  // Desktop Game: tx hash received from socket server
-  socket.on("0xUserId", (transactionHash) => {
-    console.log("txhash from game:", transactionHash);
-  });
+  // h. Browser Wallet: Redirect Alice back to game
 
-  // check health of server
-  socket.on("healthcheck", (health) => {
-    console.log(health); // OK
-  });
+  // i. Desktop Game: recieves response and display txHash
+  ws.onmessage = ({ data }) => {
+    console.log(data);
+  };
 </script>

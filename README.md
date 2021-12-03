@@ -20,8 +20,14 @@ d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
 
 e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
 
-f. Server Socket: recieves message and emits
+f. Server Socket: recieves message
 
-g. Browser Wallet: Redirect Alice back to game
+g. Server Socket: emits message
 
-h. Desktop Game: recieves response and display txHash
+h. Browser Wallet: Redirect Alice back to game
+
+i. Desktop Game: recieves response and display txHash
+
+## Notes
+
+https://medium.com/unity-nodejs/websocket-client-server-unity-nodejs-e33604c6a006
