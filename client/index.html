@@ -1,15 +1,14 @@
 <h1>This is the wallet. Check console</h1>
-
+<button onclick="sendTx()">sendTx</button>
 <script>
   const ws = new WebSocket("ws://localhost:3000");
 
   // d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
-    
-  // can remove ws.onopen when using browser wallet
-  ws.onopen = () => {
+
+  function sendTx() {
     // e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
-    ws.send(JSON.stringify({ user: "0xAlice", receipt: "0xtxHash" }));
-  };
+    ws.send(Date.now().toString());
+  }
 
   // h. Browser Wallet: Redirect Alice back to game
 
