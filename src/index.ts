@@ -1,38 +1,23 @@
-import express from "express";
-import { createServer } from "http";
-import { Server } from "socket.io";
+import { WebSocket } from "ws";
 
-interface Transaction {
-  user: string;
-  receipt: string;
-}
+const wss = new WebSocket.Server({ port: 3000 });
 
-// set up server
-const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*",
-  },
-});
+wss.on("connection", function connection(ws: WebSocket, req) {
+  // only allow wallet website to send message
+  if (req.headers.origin !== "http://localhost:8000") return ws.close();
 
-// listen to connection
-io.on("connection", (socket) => {
-  // emit ok every interval
-  setInterval(() => {
-    socket.emit("healthcheck", "OK");
-  }, 3000);
-
-  // gets info from wallet (index.html)
-  socket.on("transaction", (transaction: Transaction) => {
-    const { user, receipt} = transaction;
-    // send transaction receipt to id
-    socket.emit(user, receipt);
+  // f. Server Socket: recieves message
+  ws.on("message", (message: Buffer) => {
+    // https://github.com/websockets/ws#server-broadcast
+    wss.clients.forEach((client: WebSocket) => {
+      if (client.readyState === WebSocket.OPEN) {
+        // g. Server Socket: emits message
+        client.send(message.toString());
+      }
+    });
   });
 });
 
-// start server
-const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-  console.log(PORT);
+wss.on("listening", () => {
+  console.log(3000);
 });
