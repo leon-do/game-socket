@@ -1,19 +1,29 @@
-<h1>This is the wallet. Check console</h1>
+<button onclick="pay()">pay</button>
 <button onclick="sendTx()">sendTx</button>
+
 <script>
-  const ws = new WebSocket("ws://localhost:3000");
+  // a. Desktop Game: Alice clicks "Pay"
+  const wsGame = new WebSocket("ws://localhost:3000");
+  const wsWallet = new WebSocket("ws://localhost:3001");
 
-  // d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
+  function pay() {
+    // b. Desktop Game: opens socket connection and waits for response
+    wsGame.send("0xbob");
 
-  function sendTx() {
-    // e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
-    ws.send(Date.now().toString());
+    // d. Desktop Game: deeps like to browser wallet
   }
 
-  // h. Browser Wallet: Redirect Alice back to game
+  function sendTx() {
+    // e. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
+    const txHash = "0xtxHash";
+    // f. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
+    wsWallet.send(JSON.stringify({ address: "0xbob", receipt: txHash }));
+  }
 
-  // i. Desktop Game: recieves response and display txHash
-  ws.onmessage = ({ data }) => {
+  // i. Browser Wallet: Redirect Alice back to game
+
+  // j. Desktop Game: recieves response and display txHash
+  wsGame.onmessage = ({ data }) => {
     console.log(data);
   };
 </script>

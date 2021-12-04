@@ -12,21 +12,23 @@
 
 a. Desktop Game: Alice clicks "Pay"
 
-b. Desktop Game: opens socket connection and waits for response
+b. Desktop Game: opens socket connection 
 
-c. Desktop Game: deeps like to browser wallet (index.html): https://chainsafe.github.io/game-desktop?action=send&from=0xAlice&to=0xtoAddress&value=123
+c. Server Socket: waits for response
 
-d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
+d. Desktop Game: deeps like to browser wallet (index.html): https://chainsafe.github.io/game-desktop?action=send&from=0xAlice&to=0xtoAddress&value=123
 
-e. Browser Wallet: sends {id: 0xAlice, receipt: 0xtxHash} to socket
+e. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
 
-f. Server Socket: recieves message
+f. Browser Wallet: sends {id: 0xAlice, receipt: 0xtxHash} to socket
 
-g. Server Socket: emits message
+g. Server Socket: recieves message from wallet
 
-h. Browser Wallet: Redirect Alice back to game
+h. Server Socket: emits message
 
-i. Desktop Game: recieves response and display txHash
+i. Browser Wallet: Redirect Alice back to game
+
+j. Desktop Game: recieves response and display txHash
 
 ## Notes
 
