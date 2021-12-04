@@ -18,16 +18,10 @@ c. Desktop Game: deeps like to browser wallet (index.html): https://chainsafe.gi
 
 d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
 
-e. Browser Wallet: sends {id: 0xAlice, receipt: 0xtxHash} to socket
+e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
 
-f. Server Socket: recieves message
+f. Server Socket: recieves message and emits
 
-g. Server Socket: emits message
+g. Browser Wallet: Redirect Alice back to game
 
-h. Browser Wallet: Redirect Alice back to game
-
-i. Desktop Game: recieves response and display txHash
-
-## Notes
-
-https://medium.com/unity-nodejs/websocket-client-server-unity-nodejs-e33604c6a006
+h. Desktop Game: recieves response and display txHash
