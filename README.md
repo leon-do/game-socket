@@ -18,15 +18,15 @@ c. Desktop Game: deeps like to browser wallet (index.html): https://chainsafe.gi
 
 d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
 
-e. Browser Wallet: sends {id: 0xAlice, receipt: 0xtxHash} to socket
+e. Browser Wallet: Sends 0xAlice-0xtxHash to socket
 
-f. Server Socket: recieves message
+f. Browser Wallet: Redirect Alice back to game
 
-g. Server Socket: emits message
+g. Server Socket: Recieves message
 
-h. Browser Wallet: Redirect Alice back to game
+h. Server Socket: Emits message
 
-i. Desktop Game: recieves response and display txHash
+i. Desktop Game: Recieves response and display txHash
 
 ## Notes
 
