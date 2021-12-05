@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
+    "postinstall": "tsc",
     "dev": "nodemon src/index.ts",
     "build": "tsc -p .",
     "lint": "yarn prettier --write . && eslint \"./src/**/*.ts\" --max-warnings=0"
