@@ -1,6 +1,6 @@
 import { WebSocket } from "ws";
-
-const wss = new WebSocket.Server({ port: 3000 });
+const PORT = parseInt(process.env.PORT!) || 3000;
+const wss = new WebSocket.Server({ port: PORT });
 
 wss.on("connection", function connection(ws: WebSocket, req) {
   // g. Server Socket: recieves message
@@ -18,5 +18,5 @@ wss.on("connection", function connection(ws: WebSocket, req) {
 });
 
 wss.on("listening", () => {
-  console.log(3000);
+  console.log(PORT);
 });
