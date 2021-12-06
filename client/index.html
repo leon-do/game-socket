@@ -1,21 +1,20 @@
 <h1>This is the wallet. Check console</h1>
-<button onclick="sendTx()">sendTx</button>
+<button onclick="sendTx()">Sign Msg</button>
 <script>
-  const ws = new WebSocket("ws://localhost:3000");
+  const ws = new WebSocket("ws://game-socket.herokuapp.com/");
 
   function sendTx() {
     // d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
     const address = "0xAlice";
-    const txHash = "0xTxHash";
+    const txHash = "Sig";
     // e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
-    ws.send(`${address}-${txHash}`);
+    ws.send(`${address}-${txHash + Math.floor(Math.random() * 99)}`);
   }
 
   // f. Browser Wallet: Redirect Alice back to game
 
   // i. Desktop Game: recieves response and display txHash
   ws.onmessage = ({ data }) => {
-    const [address, txHash] = data.split("-");
-    console.log({address, txHash});
+    console.log(data);
   };
 </script>
