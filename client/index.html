@@ -1,20 +1,32 @@
 <h1>This is the wallet. Check console</h1>
-<button onclick="sendTx()">Sign Msg</button>
+<button onclick="emitMessage()">Sign and Emit</button>
 <script>
-  const ws = new WebSocket("ws://game-socket.herokuapp.com/");
+  const wsApp = new WebSocket("ws://game-socket.herokuapp.com/app");
+  const wsWallet = new WebSocket("ws://game-socket.herokuapp.com/wallet");
 
-  function sendTx() {
+  // a. Desktop Game: Alice clicks "Pay"
+  const uid = "0xAliceUUID" + Math.floor(Math.random() * 100);
+  // b. Desktop Game: opens socket connection, sends uid and waits for response
+  wsApp.onopen = () => {
+    console.log("Game is connect to socket");
+    wsApp.send(uid);
+    console.log('Game emitted uid to socket: ' + uid);
+  };
+  // c. Desktop Game: deeps link to browser wallet
+
+  function emitMessage() {
     // d. Browser Wallet: Metamask popus up. Alice signs tx gets txHash: 0xtxHash
-    const address = "0xAlice";
-    const txHash = "Sig";
-    // e. Browser Wallet: sends {user: 0xAlice, receipt: 0xtxHash} to socket
-    ws.send(`${address}-${txHash + Math.floor(Math.random() * 99)}`);
+    const response = "Sig" + Math.floor(Math.random() * 99);
+    console.log("Wallet signs msg: " + response)
+    // e. Browser Wallet: emit message to socket "0xAlice-0xResponse" 
+    wsWallet.send(`${uid}-${response}`);
+    console.log('Wallet emitted message to socket: ' + `${uid}-${response}`);
   }
 
   // f. Browser Wallet: Redirect Alice back to game
 
   // i. Desktop Game: recieves response and display txHash
-  ws.onmessage = ({ data }) => {
-    console.log(data);
+  wsApp.onmessage = ({ data }) => {
+    console.log("Game recieves message: ", data);
   };
 </script>
