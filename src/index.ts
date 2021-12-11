@@ -1,18 +1,18 @@
 import { createServer } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import net from "net";
-const PORT = parseInt(process.env.PORT!) || 3000;
+const PORT = parseInt(process.env.PORT!) || 3001;
 
 // each user has a unique id. This links wssWallet to wssApp
 interface User {
-  [uid: string]: WebSocket;
+  [id: string]: WebSocket;
 }
 
 const server = createServer();
 const wssApp = new WebSocketServer({ noServer: true });
 const wssWallet = new WebSocketServer({ noServer: true });
 
-// store users to send correct wallet message to correct app 
+// store users to send correct wallet message to correct app
 const users: User = {};
 
 // https://github.com/websockets/ws#multiple-servers-sharing-a-single-https-server
@@ -42,49 +42,49 @@ server.on("upgrade", (request, socket, head) => {
 });
 
 wssApp.on("connection", function connection(wsApp: WebSocket) {
-  // Users uid scoped for onMessage and onClose
-  let uid: string;
+  // Users id scoped for onMessage and onClose
+  let id: string;
 
   wsApp.on("message", (message: string) => {
-    // update scoped user uid
-    uid = message;
+    // update scoped user id
+    id = message;
     // save user
-    users[uid] = wsApp;
+    users[id] = wsApp;
   });
 
   wsApp.on("close", () => {
-    delete users[uid];
+    delete users[id];
   });
 
   wsApp.on("error", (error: Error) => {
-    console.log(error.message);
-    delete users[uid];
+    console.error(error.message);
+    delete users[id];
   });
 });
 
 wssWallet.on("connection", function connection(wsWallet: WebSocket) {
-  // Users uid scoped for onMessage and onClose
-  let uid: string;
+  // Users id scoped for onMessage and onClose
+  let id: string;
 
   wsWallet.on("message", (message: string) => {
-    // update scoped user uid
-    uid = message.toString().split("-")[0];
+    // update scoped user id
+    id = message.toString().split("-")[0];
     const response = message.toString().split("-")[1];
-    if (users[uid]) {
+    if (users[id]) {
       // send response to correct user
-      users[uid].send(response);
+      users[id].send(response);
       // close connection
       wsWallet.close();
     }
   });
 
   wsWallet.on("close", () => {
-    delete users[uid];
+    delete users[id];
   });
 
   wsWallet.on("error", (error: Error) => {
     console.error(error.message);
-    delete users[uid];
+    delete users[id];
   });
 });
 
